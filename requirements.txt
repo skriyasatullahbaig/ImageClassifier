@@ -1,9 +1,10 @@
-Flask
+flask
+flask-cors
 gunicorn
-numpy
-Pillow
+tensorflow
+keras
 torch
 torchvision
 scikit-learn
-tensorflow
-
+pillow
+numpy
