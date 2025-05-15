@@ -1,0 +1,29 @@
+# VSCode and Python
+.vscode/
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Dataset and uploads (large, not needed for GitHub)
+dataset/
+uploads/
+
+# Model files (if any)
+*.h5
+*.pt
+*.pkl
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# JetBrains/IDEA
+.idea/
+*.iml
+workspace.xml
+shelf/
