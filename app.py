@@ -4,14 +4,23 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
 from flask_cors import CORS
+import gdown
 
 app = Flask(__name__)
 CORS(app)
 
-# Load trained model
+# Model file setup
 model_path = os.path.join(os.getcwd(), "ImageClassifier", "cat_dog_breed_classifier.h5")
+drive_file_id = "1iF-oJKJLmB7cUDz0LHSdkWpiakqY7ZAE"
+gdown_url = f"https://drive.google.com/uc?id={drive_file_id}"
+
+# Download model from Google Drive if missing
 if not os.path.exists(model_path):
-    raise FileNotFoundError(f"Model file not found: {model_path}")
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    print("Downloading model from Google Drive...")
+    gdown.download(gdown_url, model_path, quiet=False)
+
+# Load trained model
 model = tf.keras.models.load_model(model_path)
 
 # Auto-extract class labels from dataset folder
@@ -21,7 +30,6 @@ if not os.path.exists(dataset_path):
 
 class_labels = sorted(os.listdir(dataset_path))  # Extracts class names from folders
 print("Loaded Class Labels:", class_labels)  # Debugging output
-
 
 # Prediction function
 def predict_breed(img_path):
@@ -41,12 +49,10 @@ def predict_breed(img_path):
 
     return class_labels[class_index]
 
-
 # Home Route
 @app.route("/")
 def home():
     return render_template("index.html")
-
 
 # API Route
 @app.route("/predict", methods=["POST"])
@@ -64,7 +70,6 @@ def predict():
 
     prediction = predict_breed(file_path)
     return jsonify({"prediction": prediction})
-
 
 # Run Flask server
 if __name__ == "__main__":
